@@ -20,7 +20,7 @@ require __DIR__ . '/includes/header.php';
 
 <section id="sponsor" class="sponsor-section container">
   <div class="sponsor-head">
-    <h2><?= icon($sponsor['eyebrow_icon'], 'sponsor-head-icon') ?><?= htmlspecialchars($sponsor['eyebrow']) ?></h2>
+    <h2><?= icon($sponsor['eyebrow_icon'], 'sponsor-head-icon') ?><span><?= htmlspecialchars($sponsor['eyebrow']) ?></span></h2>
     <span class="pill pill-gray"><?= htmlspecialchars($sponsor['badge']) ?></span>
   </div>
 

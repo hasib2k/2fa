@@ -71,8 +71,8 @@ const TOTP = (() => {
 
   /** RFC 6238 TOTP value for a Base32 secret at the given timestamp (ms). */
   async function generate(secret, atMs = Date.now()) {
+    if (!isValidSecret(secret)) throw new Error('Invalid secret key');
     const keyBytes = base32Decode(secret);
-    if (keyBytes.length === 0) throw new Error('Invalid secret key');
     const counter = Math.floor(atMs / 1000 / STEP);
     return hotp(keyBytes, counter);
   }

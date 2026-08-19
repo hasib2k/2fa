@@ -24,6 +24,10 @@ function icon(string $name, string $class = ''): string
         'globe' => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/>',
         'phone' => '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>',
         'shield-outline' => '<path d="M12 3 5 6v6c0 4.5 3 8.5 7 9.9 4-1.4 7-5.4 7-9.9V6l-7-3Z"/>',
+        'rocket' => '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="M12 15c3-1 7-6 7-11-5 0-10 4-11 7l4 4Z"/><path d="M9 12 4 10c.28-1.15 1-3 3-4l4 1M12 15l2 5c1.15-.28 3-1 4-3l-1-4"/>',
+        'target' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+        'trending-up' => '<path d="m3 17 6-6 4 4 8-8"/><path d="M15 6h6v6"/>',
+        'users' => '<path d="M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9" cy="7" r="3.5"/><path d="M20 20v-1a3.5 3.5 0 0 0-2.5-3.36M15 3.63a3.5 3.5 0 0 1 0 6.74"/>',
     ];
 
     $body = $paths[$name] ?? '';

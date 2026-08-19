@@ -247,7 +247,8 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   border-top: 1px solid var(--border);
   margin-bottom: 16px;
 }
-.sponsor-head h2 { font-size: 1.15rem; margin: 0; }
+.sponsor-head h2 { font-size: 1.15rem; margin: 0; display: flex; align-items: center; gap: 8px; }
+.sponsor-head-icon { width: 20px; height: 20px; color: var(--blue); flex-shrink: 0; }
 
 .pill {
   display: inline-flex;
@@ -297,7 +298,7 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   padding: 14px;
   text-align: center;
 }
-.sponsor-feature .emoji { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+.sponsor-feature-icon { width: 26px; height: 26px; display: block; margin: 0 auto 8px; color: var(--blue); }
 .sponsor-feature h3 { font-size: .95rem; margin: 0 0 4px; }
 .sponsor-feature p { font-size: .82rem; color: var(--text-muted); margin: 0; }
 

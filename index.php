@@ -20,7 +20,7 @@ require __DIR__ . '/includes/header.php';
 
 <section id="sponsor" class="sponsor-section container">
   <div class="sponsor-head">
-    <h2><?= htmlspecialchars($sponsor['eyebrow']) ?></h2>
+    <h2><?= icon($sponsor['eyebrow_icon'], 'sponsor-head-icon') ?><?= htmlspecialchars($sponsor['eyebrow']) ?></h2>
     <span class="pill pill-gray"><?= htmlspecialchars($sponsor['badge']) ?></span>
   </div>
 
@@ -35,7 +35,7 @@ require __DIR__ . '/includes/header.php';
     <div class="sponsor-features">
       <?php foreach ($sponsor['features'] as $f): ?>
         <div class="sponsor-feature">
-          <span class="emoji"><?= htmlspecialchars($f['icon']) ?></span>
+          <?= icon($f['icon'], 'sponsor-feature-icon') ?>
           <h3><?= htmlspecialchars($f['title']) ?></h3>
           <p><?= htmlspecialchars($f['desc']) ?></p>
         </div>

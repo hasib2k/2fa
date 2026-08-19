@@ -56,8 +56,8 @@ require __DIR__ . '/includes/header.php';
     <span class="pill">Transparent &amp; Secure</span>
   </div>
 
-  <div class="card">
-    <h2 style="margin:0 0 16px;font-size:1.2rem;">How It Works</h2>
+  <div class="card howto-work-card">
+    <h2>How It Works</h2>
     <div class="howto-steps">
       <div class="howto-step">
         <span class="step-num">1</span>

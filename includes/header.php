@@ -9,6 +9,17 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/icons.php';
 
+// Security headers — backs the "modern security headers" claim on the About
+// page. No inline <style>/<script> or external origins are used, so this can
+// be a strict, no-'unsafe-inline' policy.
+if (!headers_sent()) {
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: DENY');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+    header("Content-Security-Policy: default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+}
+
 $current_page = $current_page ?? 'home';
 $page_title   = $page_title ?? ($site_name . ' — Free 2FA Code Generator');
 $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authentication (TOTP) code generator that works entirely in your browser.';

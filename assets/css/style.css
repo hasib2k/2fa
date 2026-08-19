@@ -504,6 +504,7 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 .feature-card.orange .feature-icon { color: var(--orange); }
 .feature-card.orange .pill { background: #ffedd5; color: var(--orange); }
 
+.howto-work-card h2 { margin: 0 0 16px; font-size: 1.2rem; }
 .howto-steps { display: flex; flex-direction: column; gap: 18px; }
 .howto-step { display: flex; gap: 14px; }
 .step-num {

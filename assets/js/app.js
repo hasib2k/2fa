@@ -25,7 +25,8 @@
   function loadAccounts() {
     let stored = [];
     try {
-      stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      stored = Array.isArray(parsed) ? parsed.filter((a) => a && typeof a === 'object') : [];
     } catch (e) {
       stored = [];
     }
@@ -52,9 +53,6 @@
   // ---------------- Rendering ----------------
 
   function render() {
-    if (accountsList.__onlyGenerator) {
-      // index.php only shows the generator UI
-    }
     accountsList.innerHTML = '';
     accounts.forEach((account) => {
       accountsList.appendChild(renderAccountCard(account));
@@ -146,10 +144,11 @@
     const metaEl = card.querySelector('.code-meta');
 
     if (!account.secret || !TOTP.isValidSecret(account.secret)) {
-      errorEl.hidden = account.secret ? false : true;
+      // Only show the "invalid secret" message once the user has typed
+      // something — an empty field isn't an error yet.
+      errorEl.hidden = !account.secret;
       valueEl.hidden = true;
       metaEl.hidden = true;
-      if (!account.secret) errorEl.hidden = true;
       return;
     }
 
@@ -168,9 +167,7 @@
   }
 
   async function refreshAllCodes() {
-    for (const account of accounts) {
-      await refreshCode(account.id);
-    }
+    await Promise.all(accounts.map((account) => refreshCode(account.id)));
   }
 
   function copyCode(accountId) {

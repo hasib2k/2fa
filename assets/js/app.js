@@ -122,7 +122,7 @@
       <div class="field">
         <label>Secret Key</label>
         <div class="secret-input-wrap">
-          <input type="password" class="account-secret-input" placeholder="Paste your Base32 secret key" value="${escapeAttr(account.secret || '')}">
+          <input type="password" class="account-secret-input" placeholder="Paste your secret key here..." value="${escapeAttr(account.secret || '')}">
           <button type="button" class="toggle-visibility" data-action="toggle-visibility" aria-label="Show secret key">
             ${iconSvg('eye')}
           </button>

@@ -20,16 +20,17 @@ $current_year = date('Y');
  * This is intentionally generic — swap the copy below for a real partner.
  */
 $sponsor = [
-    'eyebrow'   => '🚀 Grow With Confidence',
+    'eyebrow'   => 'Grow With Confidence',
+    'eyebrow_icon' => 'rocket',
     'badge'     => 'Sponsored',
     'partner'   => 'Your Sponsor Name',
     'tag'       => 'Featured Partner',
     'headline'  => 'Reach Thousands of Security-Conscious Users',
     'body'      => 'This space is reserved for a sponsor. Advertise your product or service to visitors who care about privacy and account security.',
     'features'  => [
-        ['icon' => '🎯', 'title' => 'Targeted Audience',  'desc' => 'Reach users who actively care about digital security.'],
-        ['icon' => '📈', 'title' => 'Simple Placement',    'desc' => 'One clean, responsive banner slot — no clutter.'],
-        ['icon' => '🤝', 'title' => 'Fair Partnership',    'desc' => 'Transparent, editable sponsorship placement.'],
+        ['icon' => 'target',       'title' => 'Targeted Audience', 'desc' => 'Reach users who actively care about digital security.'],
+        ['icon' => 'trending-up',  'title' => 'Simple Placement',  'desc' => 'One clean, responsive banner slot — no clutter.'],
+        ['icon' => 'users',        'title' => 'Fair Partnership',  'desc' => 'Transparent, editable sponsorship placement.'],
     ],
     'cta_label' => 'Become a Sponsor →',
     'cta_url'   => 'about.php#contact',

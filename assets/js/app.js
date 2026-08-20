@@ -515,6 +515,7 @@
     copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
     check: '<path d="M20 6 9 17l-5-5"/>',
     lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    history: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>',
   };
 
   function iconSvg(name) {
@@ -529,6 +530,94 @@
       .replace(/>/g, '&gt;');
   }
 
+  // ---------------- History Panel ----------------
+
+  let historyPanel = null;
+
+  function relativeTime(ms) {
+    const diff = Date.now() - (ms || 0);
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return `${mins} minute${mins !== 1 ? 's' : ''} ago`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    const days = Math.floor(hours / 24);
+    return `${days} day${days !== 1 ? 's' : ''} ago`;
+  }
+
+  function maskSecret(secret) {
+    if (!secret) return '';
+    const s = secret.replace(/\s/g, '');
+    if (s.length <= 8) return '••••••••';
+    return s.slice(0, 4) + '****' + s.slice(-4);
+  }
+
+  function buildHistoryPanel() {
+    if (historyPanel) return;
+    historyPanel = document.createElement('div');
+    historyPanel.className = 'history-panel';
+    historyPanel.hidden = true;
+    document.body.appendChild(historyPanel);
+
+    document.addEventListener('click', (e) => {
+      if (!historyPanel || historyPanel.hidden) return;
+      const isHistoryTrigger = (historyBtn && historyBtn.contains(e.target))
+        || (mobileHistoryBtn && mobileHistoryBtn.contains(e.target));
+      if (!isHistoryTrigger && !historyPanel.contains(e.target)) {
+        historyPanel.hidden = true;
+      }
+    });
+  }
+
+  function renderHistoryPanel(anchorEl) {
+    buildHistoryPanel();
+
+    const withSecrets = accounts.filter((a) => a.secret || a.encSecret);
+    let itemsHtml = '';
+
+    if (withSecrets.length === 0) {
+      itemsHtml = `<p class="history-empty">No saved keys yet.</p>`;
+    } else {
+      itemsHtml = `<div class="history-list">${withSecrets.map((a) => {
+        const name = escapeAttr(a.name || 'Unnamed');
+        const masked = a.secret ? maskSecret(a.secret) : '<span class="history-encrypted">encrypted</span>';
+        const when = relativeTime(a.createdAt);
+        return `
+          <div class="history-item">
+            <div class="history-item-top">
+              <span class="history-item-name">${name}</span>
+              <span class="history-item-badge">${when}</span>
+            </div>
+            <div class="history-item-secret">${masked}</div>
+            <div class="history-item-meta">Added: ${when}</div>
+          </div>`;
+      }).join('')}</div>`;
+    }
+
+    historyPanel.innerHTML = `
+      <div class="history-panel-head">
+        ${iconSvg('history')}<h3>Recent Keys (Last 7 Days)</h3>
+      </div>
+      ${itemsHtml}`;
+
+    historyPanel.hidden = false;
+
+    // Position below the anchor button
+    const rect = anchorEl.getBoundingClientRect();
+    historyPanel.style.top = (rect.bottom + 8) + 'px';
+    historyPanel.style.right = (window.innerWidth - rect.right) + 'px';
+    historyPanel.style.left = 'auto';
+  }
+
+  function toggleHistoryPanel(anchorEl) {
+    buildHistoryPanel();
+    if (historyPanel.hidden) {
+      renderHistoryPanel(anchorEl);
+    } else {
+      historyPanel.hidden = true;
+    }
+  }
+
   // ---------------- Init ----------------
 
   initTheme();
@@ -536,18 +625,29 @@
   if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
   if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
 
-  if (historyBtn) historyBtn.addEventListener('click', () => {
-    accountsList && accountsList.scrollIntoView({ behavior: 'smooth' });
-  });
-  if (refreshBtn) refreshBtn.addEventListener('click', refreshAllCodes);
+  function doRefresh() {
+    refreshAllCodes();
+    showToast('Codes refreshed');
+    document.querySelectorAll('.code-value').forEach((el) => {
+      el.classList.add('code-flash');
+      setTimeout(() => el.classList.remove('code-flash'), 400);
+    });
+  }
 
-  if (mobileHistoryBtn) mobileHistoryBtn.addEventListener('click', () => {
+  if (historyBtn) historyBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleHistoryPanel(historyBtn);
+  });
+  if (refreshBtn) refreshBtn.addEventListener('click', doRefresh);
+
+  if (mobileHistoryBtn) mobileHistoryBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     toggleMenu();
-    accountsList && accountsList.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => toggleHistoryPanel(mobileHistoryBtn), 50);
   });
   if (mobileRefreshBtn) mobileRefreshBtn.addEventListener('click', () => {
     toggleMenu();
-    refreshAllCodes();
+    doRefresh();
   });
 
   if (encryptDataBtn) encryptDataBtn.addEventListener('click', () => {

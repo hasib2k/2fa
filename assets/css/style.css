@@ -494,6 +494,13 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 .copy-btn svg { width: 16px; height: 16px; }
 .copy-btn.copied { color: var(--green); border-color: var(--green-tint-border); }
 
+@keyframes codeFlash {
+  0%   { opacity: 1; }
+  40%  { opacity: .3; }
+  100% { opacity: 1; }
+}
+.code-flash { animation: codeFlash .4s ease; }
+
 /* Timer */
 .timer-card {
   display: flex;
@@ -683,6 +690,66 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 .overlay-error { color: var(--danger); font-size: .85rem; margin: 0 0 14px; }
 .overlay-card .btn-block { margin-bottom: 10px; }
 .overlay-card .btn-block:last-child { margin-bottom: 0; }
+
+/* ---------------- History Panel ---------------- */
+.history-panel {
+  position: fixed;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.14);
+  padding: 20px;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  z-index: 99;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.history-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.history-panel-head svg { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; }
+.history-panel-head h3 { margin: 0; font-size: 1rem; font-weight: 700; }
+
+.history-list { display: flex; flex-direction: column; gap: 10px; }
+
+.history-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.history-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.history-item-name { font-weight: 600; font-size: .92rem; }
+.history-item-badge {
+  font-size: .75rem;
+  color: var(--text-muted);
+  background: var(--pill-bg);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.history-item-secret {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: .88rem;
+  color: var(--blue);
+  margin-bottom: 4px;
+  letter-spacing: .04em;
+}
+.history-encrypted { color: var(--text-muted); font-style: italic; font-family: inherit; }
+.history-item-meta { font-size: .78rem; color: var(--text-muted); }
+.history-empty { color: var(--text-muted); font-size: .9rem; text-align: center; padding: 12px 0; margin: 0; }
 
 /* ---------------- Toast ---------------- */
 .toast {

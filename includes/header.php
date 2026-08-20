@@ -12,12 +12,14 @@ require_once __DIR__ . '/icons.php';
 // Security headers — backs the "modern security headers" claim on the About
 // page. No inline <style>/<script> or external origins are used, so this can
 // be a strict, no-'unsafe-inline' policy.
+$csp_nonce = base64_encode(random_bytes(16));
+
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header("Content-Security-Policy: default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+    header("Content-Security-Policy: default-src 'self'; style-src 'self'; script-src 'self' 'nonce-{$csp_nonce}'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
 }
 
 $current_page = $current_page ?? 'home';
@@ -33,6 +35,9 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
 <meta name="description" content="<?= htmlspecialchars($page_desc) ?>">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/style.css">
+<script nonce="<?= htmlspecialchars($csp_nonce) ?>">
+  try { if (localStorage.getItem('tfa_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch(e) {}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>

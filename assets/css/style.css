@@ -864,12 +864,6 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
     top: calc(var(--header-h) + 20px);
   }
 
-  /* generator inside grid — remove its own horizontal padding */
-  .page-main .generator {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
   /* howto inside grid */
   .page-main .howto {
     margin: 0;

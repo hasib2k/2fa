@@ -19,7 +19,7 @@ if (!headers_sent()) {
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header("Content-Security-Policy: default-src 'self'; style-src 'self'; script-src 'self' 'nonce-{$csp_nonce}'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+    header("Content-Security-Policy: default-src 'self'; style-src 'self'; script-src 'self' 'nonce-{$csp_nonce}' https://www.googletagmanager.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
 }
 
 $current_page = $current_page ?? 'home';
@@ -58,6 +58,7 @@ $jsonld = json_encode([
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#2563eb">
 <link rel="canonical" href="<?= htmlspecialchars($canonical_url) ?>">
+<meta name="google-site-verification" content="IlFyBSiKPS-tM075fQRnDODvVrR6Vg1W-gswPJiD9Y8" />
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
@@ -81,6 +82,15 @@ $jsonld = json_encode([
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json"><?= $jsonld ?></script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1EHPNQ28FC"></script>
+<script nonce="<?= htmlspecialchars($csp_nonce) ?>">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1EHPNQ28FC');
+</script>
 
 <link rel="stylesheet" href="/assets/css/style.css">
 <script nonce="<?= htmlspecialchars($csp_nonce) ?>">

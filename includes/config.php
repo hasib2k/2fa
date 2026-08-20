@@ -34,5 +34,5 @@ $sponsor = [
     ],
     'cta_label' => 'Become a Sponsor →',
     'cta_url'   => 'about.php#contact',
-    'trust'     => ['Fully Configurable', 'Edit in config.php'],
+    'trust'     => [],
 ];

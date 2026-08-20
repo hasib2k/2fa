@@ -4,10 +4,11 @@
  * rendering, live TOTP codes, the shared countdown/progress bar,
  * theme + menu toggles, and clipboard copy.
  */
-(() => {
+(async () => {
   const STORAGE_KEY = 'tfa_accounts';
   const CRYPTO_KEY_STORAGE = 'tfa_crypto';
   const THEME_KEY = 'tfa_theme';
+  const SESSION_PIN_KEY = 'tfa_session_pin';
   const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
   const accountsList = document.getElementById('accountsList');
@@ -327,12 +328,13 @@
   }
 
   async function attemptUnlock(silent = false) {
-    const pin = lockPinInput.value.trim();
+    const pin = lockPinInput ? lockPinInput.value.trim() : '';
     const config = getCryptoConfig();
     if (!pin || !config) return;
     try {
       const key = await PinCrypto.unlock(pin, config);
       cryptoKey = key;
+      sessionStorage.setItem(SESSION_PIN_KEY, pin);
       for (const account of accounts) {
         if (account.encSecret) {
           account.secret = await PinCrypto.decrypt(key, account.encSecret);
@@ -349,10 +351,32 @@
     }
   }
 
+  async function trySessionUnlock() {
+    const pin = sessionStorage.getItem(SESSION_PIN_KEY);
+    const config = getCryptoConfig();
+    if (!pin || !config) return false;
+    try {
+      const key = await PinCrypto.unlock(pin, config);
+      cryptoKey = key;
+      for (const account of accounts) {
+        if (account.encSecret) {
+          account.secret = await PinCrypto.decrypt(key, account.encSecret);
+        }
+      }
+      hideLockScreen();
+      finishInit();
+      return true;
+    } catch (e) {
+      sessionStorage.removeItem(SESSION_PIN_KEY);
+      return false;
+    }
+  }
+
   function resetAllData() {
     if (!confirm('This erases every saved account and your PIN from this browser — there is no way to undo this. Continue?')) return;
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(CRYPTO_KEY_STORAGE);
+    sessionStorage.removeItem(SESSION_PIN_KEY);
     location.reload();
   }
 
@@ -451,6 +475,7 @@
     const { config, key } = await PinCrypto.createConfig(pin);
     saveCryptoConfig(config);
     cryptoKey = key;
+    sessionStorage.setItem(SESSION_PIN_KEY, pin);
 
     const resolve = pendingSetupResolve;
     closePinSetupModal();
@@ -528,6 +553,7 @@
         accounts = [];
         cryptoKey = null;
         localStorage.removeItem(CRYPTO_KEY_STORAGE);
+        sessionStorage.removeItem(SESSION_PIN_KEY);
         saveAccounts();
         addBlankAccount(false);
         render();
@@ -542,7 +568,8 @@
   if (accountsList) {
     accounts = loadAccounts();
     if (hasCryptoConfig()) {
-      showLockScreen();
+      const unlocked = await trySessionUnlock();
+      if (!unlocked) showLockScreen();
     } else if (accounts.some((a) => a.secret && !a.encSecret)) {
       // Accounts saved before PIN encryption existed: still plaintext in
       // storage. Require a PIN now so saveAccounts() can encrypt them:

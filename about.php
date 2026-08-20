@@ -15,8 +15,9 @@ require __DIR__ . '/includes/header.php';
   <p>A free, secure, and privacy-focused two-factor authentication code generator that works entirely in your browser.</p>
 </section>
 
-<section class="section-stack">
+<div class="section-stack">
 
+  <!-- Mission — full width -->
   <div class="card mission-card">
     <h2>Our Mission</h2>
     <p>We believe that everyone deserves access to secure, reliable two-factor authentication tools without compromising
@@ -24,77 +25,88 @@ require __DIR__ . '/includes/header.php';
       trustworthy solution that puts your security and privacy first.</p>
   </div>
 
-  <div class="feature-card green">
-    <?= icon('lock', 'feature-icon') ?>
-    <h3>Privacy First</h3>
-    <p>All your secret keys are stored locally on your device. Nothing is sent to our servers, ensuring your sensitive
-      information never leaves your control.</p>
-    <span class="pill">100% Local Storage</span>
-  </div>
+  <!-- Feature cards — 2×2 grid on desktop -->
+  <div class="features-grid">
 
-  <div class="feature-card blue">
-    <?= icon('globe', 'feature-icon') ?>
-    <h3>Works Offline</h3>
-    <p>Once loaded, the generator works without an internet connection. Perfect for travel, areas with poor connectivity,
-      or when you need maximum security.</p>
-    <span class="pill">No Internet Required</span>
-  </div>
+    <div class="feature-card green">
+      <?= icon('lock', 'feature-icon') ?>
+      <h3>Privacy First</h3>
+      <p>All your secret keys are stored locally on your device. Nothing is sent to our servers, ensuring your sensitive
+        information never leaves your control.</p>
+      <span class="pill">100% Local Storage</span>
+    </div>
 
-  <div class="feature-card purple">
-    <?= icon('phone', 'feature-icon') ?>
-    <h3>Universal Compatibility</h3>
-    <p>Generates standard TOTP codes that work with Google Authenticator, Authy, Microsoft Authenticator, and any other
-      RFC 6238 compliant application.</p>
-    <span class="pill">RFC 6238 Standard</span>
-  </div>
+    <div class="feature-card blue">
+      <?= icon('globe', 'feature-icon') ?>
+      <h3>Works Offline</h3>
+      <p>Once loaded, the generator works without an internet connection. Perfect for travel, areas with poor connectivity,
+        or when you need maximum security.</p>
+      <span class="pill">No Internet Required</span>
+    </div>
 
-  <div class="feature-card orange">
-    <?= icon('shield-outline', 'feature-icon') ?>
-    <h3>Open Source Security</h3>
-    <p>Built with transparency in mind. Our code uses industry-standard cryptographic libraries and follows security
-      best practices you can verify.</p>
-    <span class="pill">Transparent &amp; Secure</span>
-  </div>
+    <div class="feature-card purple">
+      <?= icon('phone', 'feature-icon') ?>
+      <h3>Universal Compatibility</h3>
+      <p>Generates standard TOTP codes that work with Google Authenticator, Authy, Microsoft Authenticator, and any other
+        RFC 6238 compliant application.</p>
+      <span class="pill">RFC 6238 Standard</span>
+    </div>
 
-  <div class="card">
-    <h2 style="margin:0 0 16px;font-size:1.2rem;">How It Works</h2>
-    <div class="howto-steps">
-      <div class="howto-step">
-        <span class="step-num">1</span>
-        <div>
-          <h3>Enter Your Secret Key</h3>
-          <p>Paste the secret key provided by your service (Google, GitHub, etc.) when setting up 2FA.</p>
+    <div class="feature-card orange">
+      <?= icon('shield-outline', 'feature-icon') ?>
+      <h3>Open Source Security</h3>
+      <p>Built with transparency in mind. Our code uses industry-standard cryptographic libraries and follows security
+        best practices you can verify.</p>
+      <span class="pill">Transparent &amp; Secure</span>
+    </div>
+
+  </div><!-- /.features-grid -->
+
+  <!-- How it works + Security & Privacy side-by-side on desktop -->
+  <div class="about-bottom-grid">
+
+    <div class="card">
+      <h2 style="margin:0 0 16px;font-size:1.2rem;">How It Works</h2>
+      <div class="howto-steps">
+        <div class="howto-step">
+          <span class="step-num">1</span>
+          <div>
+            <h3>Enter Your Secret Key</h3>
+            <p>Paste the secret key provided by your service (Google, GitHub, etc.) when setting up 2FA.</p>
+          </div>
         </div>
-      </div>
-      <div class="howto-step">
-        <span class="step-num">2</span>
-        <div>
-          <h3>Automatic Code Generation</h3>
-          <p>Our algorithm generates a new 6-digit code every 30 seconds using the TOTP standard.</p>
+        <div class="howto-step">
+          <span class="step-num">2</span>
+          <div>
+            <h3>Automatic Code Generation</h3>
+            <p>Our algorithm generates a new 6-digit code every 30 seconds using the TOTP standard.</p>
+          </div>
         </div>
-      </div>
-      <div class="howto-step">
-        <span class="step-num">3</span>
-        <div>
-          <h3>Use Your Code</h3>
-          <p>Click to copy the code and paste it into your login form. Codes refresh automatically.</p>
+        <div class="howto-step">
+          <span class="step-num">3</span>
+          <div>
+            <h3>Use Your Code</h3>
+            <p>Click to copy the code and paste it into your login form. Codes refresh automatically.</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="security-card">
-    <h2>Security &amp; Privacy</h2>
-    <p class="security-item"><strong>Local Storage Only:</strong> Your secret keys are stored in your browser's local
-      storage and automatically deleted after 7 days. They never leave your device.</p>
-    <p class="security-item"><strong>No Analytics:</strong> We don't track your usage, collect personal data, or use
-      cookies for tracking purposes.</p>
-    <p class="security-item"><strong>HTTPS Only:</strong> All connections are encrypted and we use modern security
-      headers to protect against common web vulnerabilities.</p>
-    <p class="security-item"><strong>Standard Algorithms:</strong> We use the same cryptographic standards
-      (HMAC-SHA1, Base32) as major authenticator apps.</p>
-  </div>
+    <div class="security-card">
+      <h2>Security &amp; Privacy</h2>
+      <p class="security-item"><strong>Local Storage Only:</strong> Your secret keys are stored in your browser's local
+        storage and automatically deleted after 7 days. They never leave your device.</p>
+      <p class="security-item"><strong>No Analytics:</strong> We don't track your usage, collect personal data, or use
+        cookies for tracking purposes.</p>
+      <p class="security-item"><strong>HTTPS Only:</strong> All connections are encrypted and we use modern security
+        headers to protect against common web vulnerabilities.</p>
+      <p class="security-item"><strong>Standard Algorithms:</strong> We use the same cryptographic standards
+        (HMAC-SHA1, Base32) as major authenticator apps.</p>
+    </div>
 
+  </div><!-- /.about-bottom-grid -->
+
+  <!-- FAQ — full width -->
   <div class="card faq-card">
     <h2>Frequently Asked Questions</h2>
 
@@ -118,6 +130,6 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 
-</section>
+</div><!-- /.section-stack -->
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

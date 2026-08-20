@@ -32,6 +32,19 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
       <span><?= htmlspecialchars($site_name) ?></span>
     </a>
 
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <?php foreach ($nav_links as $link):
+        $is_active = ($link['url'] === 'index.php' && $current_page === 'home')
+                  || ($link['url'] === 'about.php' && $current_page === 'about');
+      ?>
+        <a href="<?= htmlspecialchars($link['url']) ?>"
+           class="nav-link<?= $is_active ? ' active' : '' ?>"
+           <?= !empty($link['external']) ? 'target="_blank" rel="noopener"' : '' ?>>
+          <?= htmlspecialchars($link['label']) ?>
+        </a>
+      <?php endforeach; ?>
+    </nav>
+
     <div class="header-actions">
       <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle light/dark theme">
         <?= icon('sun', 'icon icon-sun') ?>

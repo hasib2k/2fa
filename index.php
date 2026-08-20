@@ -18,68 +18,82 @@ require __DIR__ . '/includes/header.php';
   </button>
 </section>
 
-<section id="sponsor" class="sponsor-section container">
-  <div class="sponsor-head">
-    <h2><?= htmlspecialchars($sponsor['eyebrow']) ?></h2>
-    <span class="pill pill-gray"><?= htmlspecialchars($sponsor['badge']) ?></span>
-  </div>
+<div class="page-grid container">
 
-  <div class="sponsor-card">
-    <div class="sponsor-partner-row">
-      <strong><?= htmlspecialchars($sponsor['partner']) ?></strong>
-      <span class="pill pill-blue"><?= htmlspecialchars($sponsor['tag']) ?></span>
-    </div>
-    <p class="sponsor-headline"><?= htmlspecialchars($sponsor['headline']) ?></p>
-    <div class="sponsor-body"><?= htmlspecialchars($sponsor['body']) ?></div>
+  <!-- ── Main column: generator + how-to ── -->
+  <div class="page-main">
 
-    <div class="sponsor-features">
-      <?php foreach ($sponsor['features'] as $f): ?>
-        <div class="sponsor-feature">
-          <span class="emoji"><?= htmlspecialchars($f['icon']) ?></span>
-          <h3><?= htmlspecialchars($f['title']) ?></h3>
-          <p><?= htmlspecialchars($f['desc']) ?></p>
+    <section class="generator">
+      <div id="accountsList"></div>
+
+      <div class="timer-card card">
+        <?= icon('stopwatch') ?>
+        <div>
+          <p id="timerText">30s until next refresh</p>
+          <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
         </div>
-      <?php endforeach; ?>
-    </div>
+      </div>
 
-    <a href="<?= htmlspecialchars($sponsor['cta_url']) ?>" class="btn btn-primary btn-block">
-      <?= htmlspecialchars($sponsor['cta_label']) ?>
-    </a>
+      <button id="addAccountBtn" class="btn btn-dark btn-block" type="button">
+        <?= icon('plus', 'icon-sm') ?><span>Add Another Account</span>
+      </button>
+    </section>
 
-    <div class="sponsor-trust">
-      <?php foreach ($sponsor['trust'] as $t): ?>
-        <span class="pill pill-green"><?= htmlspecialchars($t) ?></span>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
+    <section class="howto card">
+      <h2>How to Use</h2>
+      <ul>
+        <li>Enter a name for your account (optional)</li>
+        <li>Paste the secret key from your 2FA setup</li>
+        <li>Your code will generate automatically every 30 seconds</li>
+        <li>Click the code to copy it to your clipboard</li>
+        <li>Add multiple accounts as needed</li>
+        <li>Your keys are saved locally for 7 days</li>
+      </ul>
+    </section>
 
-<section class="generator container">
-  <div id="accountsList"></div>
+  </div><!-- /.page-main -->
 
-  <div class="timer-card card">
-    <?= icon('stopwatch') ?>
-    <div>
-      <p id="timerText">30s until next refresh</p>
-      <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
-    </div>
-  </div>
+  <!-- ── Sidebar: sponsor ── -->
+  <aside class="page-sidebar">
 
-  <button id="addAccountBtn" class="btn btn-dark btn-block" type="button">
-    <?= icon('plus', 'icon-sm') ?><span>Add Another Account</span>
-  </button>
-</section>
+    <section id="sponsor" class="sponsor-section">
+      <div class="sponsor-head">
+        <h2><?= htmlspecialchars($sponsor['eyebrow']) ?></h2>
+        <span class="pill pill-gray"><?= htmlspecialchars($sponsor['badge']) ?></span>
+      </div>
 
-<section class="howto card">
-  <h2>How to Use</h2>
-  <ul>
-    <li>Enter a name for your account (optional)</li>
-    <li>Paste the secret key from your 2FA setup</li>
-    <li>Your code will generate automatically every 30 seconds</li>
-    <li>Click the code to copy it to your clipboard</li>
-    <li>Add multiple accounts as needed</li>
-    <li>Your keys are saved locally for 7 days</li>
-  </ul>
-</section>
+      <div class="sponsor-card">
+        <div class="sponsor-partner-row">
+          <strong><?= htmlspecialchars($sponsor['partner']) ?></strong>
+          <span class="pill pill-blue"><?= htmlspecialchars($sponsor['tag']) ?></span>
+        </div>
+        <p class="sponsor-headline"><?= htmlspecialchars($sponsor['headline']) ?></p>
+        <div class="sponsor-body"><?= htmlspecialchars($sponsor['body']) ?></div>
+
+        <div class="sponsor-features">
+          <?php foreach ($sponsor['features'] as $f): ?>
+            <div class="sponsor-feature">
+              <span class="emoji"><?= htmlspecialchars($f['icon']) ?></span>
+              <h3><?= htmlspecialchars($f['title']) ?></h3>
+              <p><?= htmlspecialchars($f['desc']) ?></p>
+            </div>
+          <?php endforeach; ?>
+        </div>
+
+        <a href="<?= htmlspecialchars($sponsor['cta_url']) ?>" class="btn btn-primary btn-block">
+          <?= htmlspecialchars($sponsor['cta_label']) ?>
+        </a>
+
+        <div class="sponsor-trust">
+          <?php foreach ($sponsor['trust'] as $t): ?>
+            <span class="pill pill-green"><?= htmlspecialchars($t) ?></span>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+
+  </aside><!-- /.page-sidebar -->
+
+</div><!-- /.page-grid -->
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

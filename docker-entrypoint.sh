@@ -9,4 +9,8 @@ set -e
 sed -ri "s/^Listen .*/Listen ${PORT}/" /etc/apache2/ports.conf
 sed -ri "s/:80>/:${PORT}>/" /etc/apache2/sites-available/*.conf
 
+# Allow .htaccess overrides
+sed -ri "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+sed -ri "s/AllowOverride None/AllowOverride All/g" /etc/apache2/sites-available/*.conf
+
 exec apache2-foreground

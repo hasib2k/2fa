@@ -316,6 +316,11 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 /* ---------------- Generator ---------------- */
 .generator { padding: 8px 20px 32px; display: flex; flex-direction: column; gap: 16px; }
 
+#accountsList { display: flex; flex-direction: column; gap: 16px; }
+
+.backup-row { display: flex; gap: 12px; }
+.backup-row .btn { flex: 1; }
+
 .account-card {
   background: var(--card-bg);
   border: 1px solid var(--border);

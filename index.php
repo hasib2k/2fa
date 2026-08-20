@@ -68,6 +68,16 @@ require __DIR__ . '/includes/header.php';
   <button id="addAccountBtn" class="btn btn-dark btn-block" type="button">
     <?= icon('plus', 'icon-sm') ?><span>Add Another Account</span>
   </button>
+
+  <div class="backup-row">
+    <button id="exportBackupBtn" class="btn btn-outline" type="button">
+      <?= icon('download', 'icon-sm') ?><span>Export Backup</span>
+    </button>
+    <button id="importBackupBtn" class="btn btn-outline" type="button">
+      <?= icon('upload', 'icon-sm') ?><span>Import Backup</span>
+    </button>
+    <input type="file" id="importFileInput" accept="application/json" hidden>
+  </div>
 </section>
 
 <section class="howto card">
@@ -80,6 +90,7 @@ require __DIR__ . '/includes/header.php';
     <li>Add multiple accounts as needed</li>
     <li>The first time you save a key, you'll set a PIN to encrypt it</li>
     <li>Your keys are saved locally, PIN-encrypted, for 7 days</li>
+    <li>Export a backup before clearing your browser, switching devices, or if 7 days isn't long enough</li>
   </ul>
 </section>
 

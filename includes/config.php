@@ -10,7 +10,7 @@ $nav_links = [
     ['label' => 'Generator',          'url' => '/'],
     ['label' => 'About',              'url' => '/about'],
     ['label' => 'Sponsor',            'url' => '/#sponsor'],
-    ['label' => 'Contact on Telegram','url' => 'https://t.me/', 'external' => true],
+    ['label' => 'Contact on Telegram','url' => 'https://t.me/mrmarketer247', 'external' => true],
 ];
 
 $current_year = date('Y');

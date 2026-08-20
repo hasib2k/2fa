@@ -85,14 +85,17 @@ require __DIR__ . '/includes/header.php';
 
   <div class="security-card">
     <h2>Security &amp; Privacy</h2>
-    <p class="security-item"><strong>Local Storage Only:</strong> Your secret keys are stored in your browser's local
-      storage and automatically deleted after 7 days. They never leave your device.</p>
+    <p class="security-item"><strong>PIN-Encrypted Storage:</strong> The first time you save a key, you set a PIN.
+      Your secret keys are encrypted with it (AES-256-GCM, PBKDF2) before they're written to your browser's local
+      storage, and automatically deleted after 7 days. Nothing is ever stored in plain text, and the PIN itself is
+      never saved anywhere.</p>
     <p class="security-item"><strong>No Analytics:</strong> We don't track your usage, collect personal data, or use
       cookies for tracking purposes.</p>
     <p class="security-item"><strong>HTTPS Only:</strong> All connections are encrypted and we use modern security
       headers to protect against common web vulnerabilities.</p>
     <p class="security-item"><strong>Standard Algorithms:</strong> We use the same cryptographic standards
-      (HMAC-SHA1, Base32) as major authenticator apps.</p>
+      (HMAC-SHA1, Base32) as major authenticator apps, plus PBKDF2 + AES-GCM to encrypt what's stored on your
+      device.</p>
   </div>
 
   <div class="card faq-card">
@@ -104,9 +107,10 @@ require __DIR__ . '/includes/header.php';
         and other trusted apps.</p>
     </div>
     <div class="faq-item">
-      <h3>What if I lose my secret keys?</h3>
-      <p>Since everything is stored locally, clearing your browser data will remove saved keys. Always keep backup
-        codes from your services.</p>
+      <h3>What if I lose my secret keys, or forget my PIN?</h3>
+      <p>Since everything is stored locally and encrypted with your PIN, clearing your browser data — or forgetting
+        your PIN — means your saved keys can't be recovered; you'd reset and re-add them. Always keep the backup
+        codes your services gave you.</p>
     </div>
     <div class="faq-item">
       <h3>Does this work on mobile?</h3>

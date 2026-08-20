@@ -78,8 +78,34 @@ require __DIR__ . '/includes/header.php';
     <li>Your code will generate automatically every 30 seconds</li>
     <li>Click the code to copy it to your clipboard</li>
     <li>Add multiple accounts as needed</li>
-    <li>Your keys are saved locally for 7 days</li>
+    <li>The first time you save a key, you'll set a PIN to encrypt it</li>
+    <li>Your keys are saved locally, PIN-encrypted, for 7 days</li>
   </ul>
 </section>
+
+<div id="lockScreen" class="overlay" hidden>
+  <div class="overlay-card">
+    <?= icon('lock', 'shield-icon') ?>
+    <h2>Enter Your PIN</h2>
+    <p class="overlay-sub">Your saved keys are encrypted. Enter your PIN to unlock them.</p>
+    <input type="password" id="lockPinInput" class="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="••••" autocomplete="off">
+    <p class="overlay-error" id="lockError" hidden>Incorrect PIN. Try again.</p>
+    <button type="button" id="lockUnlockBtn" class="btn btn-primary btn-block">Unlock</button>
+    <button type="button" id="lockResetBtn" class="btn btn-outline btn-danger btn-block">Forgot PIN? Reset All Data</button>
+  </div>
+</div>
+
+<div id="pinSetupModal" class="overlay" hidden>
+  <div class="overlay-card">
+    <?= icon('lock', 'shield-icon') ?>
+    <h2>Set a PIN</h2>
+    <p class="overlay-sub">Choose a 4–6 digit PIN to encrypt your secret keys on this device. There's no way to recover it if you forget it.</p>
+    <input type="password" id="setupPinInput" class="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="New PIN" autocomplete="off">
+    <input type="password" id="setupPinConfirm" class="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Confirm PIN" autocomplete="off">
+    <p class="overlay-error" id="setupError" hidden></p>
+    <button type="button" id="setupConfirmBtn" class="btn btn-primary btn-block">Set PIN &amp; Save</button>
+    <button type="button" id="setupCancelBtn" class="btn btn-outline btn-block">Cancel</button>
+  </div>
+</div>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

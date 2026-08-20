@@ -55,6 +55,9 @@ html[data-theme='dark'] {
 html[data-theme='dark'] .btn-dark { color: #0b0f19; }
 
 * { box-sizing: border-box; }
+/* Author styles (e.g. `.overlay { display: flex }`) share specificity with
+   the UA's `[hidden]` rule and can win by source order — force it. */
+[hidden] { display: none !important; }
 
 html, body {
   margin: 0;
@@ -564,6 +567,48 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 .footer-links a { color: var(--text-muted); font-size: .9rem; }
 .footer-links a:hover { color: var(--blue); }
 .footer-copy { color: var(--text-muted); font-size: .82rem; margin: 0; }
+
+/* ---------------- PIN lock / setup overlays ---------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 200;
+}
+.overlay-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+}
+.overlay-card .shield-icon { width: 40px; height: 40px; margin: 0 auto 14px; display: block; }
+.overlay-card h2 { margin: 0 0 8px; font-size: 1.3rem; }
+.overlay-sub { color: var(--text-muted); font-size: .88rem; margin: 0 0 18px; }
+.pin-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1.4rem;
+  text-align: center;
+  letter-spacing: .3em;
+  background: var(--card-bg);
+  color: var(--text);
+  margin-bottom: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.pin-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, .15); }
+.overlay-error { color: var(--danger); font-size: .85rem; margin: 0 0 14px; }
+.overlay-card .btn-block { margin-bottom: 10px; }
+.overlay-card .btn-block:last-child { margin-bottom: 0; }
 
 /* ---------------- Toast ---------------- */
 .toast {

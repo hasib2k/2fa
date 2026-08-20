@@ -269,6 +269,11 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   justify-content: center;
   flex-wrap: wrap;
 }
+.hero-actions .btn {
+  padding: 8px 14px;
+  font-size: .85rem;
+  white-space: nowrap;
+}
 
 /* ---------------- Card ---------------- */
 .card {

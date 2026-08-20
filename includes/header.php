@@ -39,13 +39,33 @@ $jsonld = json_encode([
     'description'         => $page_desc,
     'applicationCategory' => 'SecurityApplication',
     'operatingSystem'     => 'Any',
+    'browserRequirements' => 'Requires a modern browser with WebCrypto API support',
+    'isAccessibleForFree' => true,
+    'inLanguage'          => 'en',
+    'keywords'            => '2FA, TOTP, two-factor authentication, authenticator, OTP, Google Authenticator, free 2FA generator',
     'offers'              => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD'],
     'featureList'         => [
         'Generate TOTP 2FA codes from secret keys',
         'Works entirely offline in the browser',
-        'PIN-encrypted local storage',
+        'PIN-encrypted local storage with AES-256-GCM',
         'No data sent to any server',
+        'Compatible with Google Authenticator, Authy, Microsoft Authenticator',
+        'Multiple accounts support',
+        'Export and import encrypted backup',
     ],
+    'creator' => [
+        '@type' => 'Organization',
+        'name'  => $site_name,
+        'url'   => $site_url,
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+$jsonld_org = json_encode([
+    '@context' => 'https://schema.org',
+    '@type'    => 'Organization',
+    'name'     => $site_name,
+    'url'      => $site_url,
+    'logo'     => $site_url . '/assets/img/favicon.svg',
 ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 ?>
 <!DOCTYPE html>
@@ -82,6 +102,7 @@ $jsonld = json_encode([
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json"><?= $jsonld ?></script>
+<script type="application/ld+json"><?= $jsonld_org ?></script>
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1EHPNQ28FC"></script>

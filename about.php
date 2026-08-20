@@ -137,4 +137,46 @@ require __DIR__ . '/includes/header.php';
 
 </div><!-- /.section-stack -->
 
+<?php
+$faq_schema = json_encode([
+    '@context'   => 'https://schema.org',
+    '@type'      => 'FAQPage',
+    'mainEntity' => [
+        [
+            '@type'          => 'Question',
+            'name'           => 'Is this safe to use?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => 'Yes! Your secret keys never leave your device. We use the same security standards as Google Authenticator and other trusted apps.',
+            ],
+        ],
+        [
+            '@type'          => 'Question',
+            'name'           => 'What if I lose my secret keys, or forget my PIN?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => 'Since everything is stored locally and encrypted with your PIN, clearing your browser data — or forgetting your PIN — means your saved keys can\'t be recovered; you\'d reset and re-add them. Exporting a backup ahead of time avoids this — the file stays PIN-encrypted, so it\'s only useful with the same PIN. Always keep the backup codes your services gave you too.',
+            ],
+        ],
+        [
+            '@type'          => 'Question',
+            'name'           => 'Does this work on mobile?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => 'The site is fully responsive and works great on phones and tablets.',
+            ],
+        ],
+        [
+            '@type'          => 'Question',
+            'name'           => 'Is this free?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => 'Yes, completely free with no hidden costs, premium features, or subscription plans.',
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+?>
+<script type="application/ld+json"><?= $faq_schema ?></script>
+
 <?php require __DIR__ . '/includes/footer.php'; ?>

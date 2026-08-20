@@ -73,46 +73,7 @@ require __DIR__ . '/includes/header.php';
 
   </div><!-- /.page-main -->
 
-  <!-- ── Sidebar: sponsor ── -->
-  <aside class="page-sidebar">
-
-    <section id="sponsor" class="sponsor-section">
-      <div class="sponsor-head">
-        <h2><?= icon($sponsor['eyebrow_icon'], 'sponsor-head-icon') ?><span><?= htmlspecialchars($sponsor['eyebrow']) ?></span></h2>
-        <span class="pill pill-gray"><?= htmlspecialchars($sponsor['badge']) ?></span>
-      </div>
-
-      <div class="sponsor-card">
-        <div class="sponsor-partner-row">
-          <strong><?= htmlspecialchars($sponsor['partner']) ?></strong>
-          <span class="pill pill-blue"><?= htmlspecialchars($sponsor['tag']) ?></span>
-        </div>
-        <p class="sponsor-headline"><?= htmlspecialchars($sponsor['headline']) ?></p>
-        <div class="sponsor-body"><?= htmlspecialchars($sponsor['body']) ?></div>
-
-        <div class="sponsor-features">
-          <?php foreach ($sponsor['features'] as $f): ?>
-            <div class="sponsor-feature">
-              <?= icon($f['icon'], 'sponsor-feature-icon') ?>
-              <h3><?= htmlspecialchars($f['title']) ?></h3>
-              <p><?= htmlspecialchars($f['desc']) ?></p>
-            </div>
-          <?php endforeach; ?>
-        </div>
-
-        <a href="<?= htmlspecialchars($sponsor['cta_url']) ?>" class="btn btn-primary btn-block">
-          <?= htmlspecialchars($sponsor['cta_label']) ?>
-        </a>
-
-        <div class="sponsor-trust">
-          <?php foreach ($sponsor['trust'] as $t): ?>
-            <span class="pill pill-green"><?= htmlspecialchars($t) ?></span>
-          <?php endforeach; ?>
-        </div>
-      </div>
-    </section>
-
-  </aside><!-- /.page-sidebar -->
+  <!-- ── Sidebar: sponsor (temporarily hidden) ── -->
 
 </div><!-- /.page-grid -->
 

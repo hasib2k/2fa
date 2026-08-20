@@ -1,9 +1,0 @@
-# Render Blueprint — lets Render auto-configure this service.
-# Dashboard: New + -> Blueprint -> pick this repo -> Apply.
-services:
-  - type: web
-    name: 2fa-online-clone
-    runtime: docker
-    plan: free
-    autoDeployTrigger: commit
-    healthCheckPath: /index.php

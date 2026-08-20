@@ -30,10 +30,18 @@ $canonical_path = ($current_page === 'about') ? '/about' : '/';
 $canonical_url  = $site_url . $canonical_path;
 $og_image       = $site_url . '/assets/img/og-image.php';
 
-// JSON-LD — use json_encode so special chars are safe valid JSON
+// JSON-LD structured data blocks
+$org = [
+    '@type' => 'Organization',
+    'name'  => $site_name,
+    'url'   => $site_url,
+    'logo'  => $site_url . '/assets/img/favicon.svg',
+];
+
+// SoftwareApplication + WebApplication (dual type — covers both schema checks)
 $jsonld = json_encode([
     '@context'            => 'https://schema.org',
-    '@type'               => 'WebApplication',
+    '@type'               => ['SoftwareApplication', 'WebApplication'],
     'name'                => $site_name,
     'url'                 => $site_url,
     'description'         => $page_desc,
@@ -53,19 +61,71 @@ $jsonld = json_encode([
         'Multiple accounts support',
         'Export and import encrypted backup',
     ],
-    'creator' => [
-        '@type' => 'Organization',
-        'name'  => $site_name,
-        'url'   => $site_url,
-    ],
+    'creator' => $org,
 ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
-$jsonld_org = json_encode([
-    '@context' => 'https://schema.org',
-    '@type'    => 'Organization',
-    'name'     => $site_name,
-    'url'      => $site_url,
-    'logo'     => $site_url . '/assets/img/favicon.svg',
+// Organization
+$jsonld_org = json_encode(
+    array_merge(['@context' => 'https://schema.org'], $org),
+    JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+);
+
+// WebSite
+$jsonld_website = json_encode([
+    '@context'  => 'https://schema.org',
+    '@type'     => 'WebSite',
+    'name'      => $site_name,
+    'url'       => $site_url,
+    'inLanguage'=> 'en',
+    'publisher' => $org,
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+// BreadcrumbList — page-specific
+if ($current_page === 'about') {
+    $jsonld_breadcrumb = json_encode([
+        '@context'        => 'https://schema.org',
+        '@type'           => 'BreadcrumbList',
+        'itemListElement' => [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',  'item' => $site_url . '/'],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'About', 'item' => $site_url . '/about'],
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+} else {
+    $jsonld_breadcrumb = json_encode([
+        '@context'        => 'https://schema.org',
+        '@type'           => 'BreadcrumbList',
+        'itemListElement' => [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => $site_url . '/'],
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+}
+
+// FAQPage — shown on both pages (home has How to Use, about has FAQ)
+$jsonld_faq = json_encode([
+    '@context'   => 'https://schema.org',
+    '@type'      => 'FAQPage',
+    'mainEntity' => [
+        [
+            '@type'          => 'Question',
+            'name'           => 'Is this safe to use?',
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Yes! Your secret keys never leave your device. We use the same security standards as Google Authenticator and other trusted apps.'],
+        ],
+        [
+            '@type'          => 'Question',
+            'name'           => 'What if I lose my secret keys, or forget my PIN?',
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Since everything is stored locally and encrypted with your PIN, clearing your browser data or forgetting your PIN means your saved keys cannot be recovered. Export a backup ahead of time to avoid this.'],
+        ],
+        [
+            '@type'          => 'Question',
+            'name'           => 'Does this work on mobile?',
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'The site is fully responsive and works great on phones and tablets.'],
+        ],
+        [
+            '@type'          => 'Question',
+            'name'           => 'Is this free?',
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Yes, completely free with no hidden costs, premium features, or subscription plans.'],
+        ],
+    ],
 ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 ?>
 <!DOCTYPE html>
@@ -103,6 +163,9 @@ $jsonld_org = json_encode([
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json"><?= $jsonld ?></script>
 <script type="application/ld+json"><?= $jsonld_org ?></script>
+<script type="application/ld+json"><?= $jsonld_website ?></script>
+<script type="application/ld+json"><?= $jsonld_breadcrumb ?></script>
+<script type="application/ld+json"><?= $jsonld_faq ?></script>
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1EHPNQ28FC"></script>

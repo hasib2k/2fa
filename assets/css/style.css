@@ -364,7 +364,7 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 
 /* ---------------- Centered generator below hero ---------------- */
 .generator-centered {
-  max-width: 560px;
+  max-width: 680px;
   margin: 0 auto;
   padding: 0 20px 8px;
 }
@@ -842,10 +842,7 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 
   /* ----- Page grid (index) ----- */
   .page-grid {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 32px;
-    align-items: start;
+    display: block;
     padding: 0 20px 48px;
   }
 
@@ -866,8 +863,8 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 
   /* howto inside grid */
   .page-main .howto {
-    margin: 0;
-    max-width: none;
+    margin: 0 auto;
+    max-width: 680px;
   }
 
   /* sponsor inside sidebar — remove its own padding */

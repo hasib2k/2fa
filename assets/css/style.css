@@ -244,7 +244,7 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 /* ---------------- Hero ---------------- */
 .hero {
   text-align: center;
-  padding: 48px 20px 32px;
+  padding: 12px 20px 16px;
 }
 .hero h1 {
   font-size: 2.4rem;
@@ -360,6 +360,13 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 
 /* ---------------- Generator ---------------- */
 .generator { padding: 8px 0 24px; display: flex; flex-direction: column; gap: 16px; }
+
+/* ---------------- Centered generator below hero ---------------- */
+.generator-centered {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 8px;
+}
 
 /* ---------------- Page grid wrapper (index) ---------------- */
 .page-grid { padding: 0 20px 40px; }
@@ -828,8 +835,8 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   .mobile-menu { display: none !important; }
 
   /* ----- Hero ----- */
-  .hero { padding: 80px 20px 56px; }
-  .hero h1 { font-size: 3.8rem; max-width: 680px; margin-left: auto; margin-right: auto; }
+  .hero { padding: 24px 20px 28px; }
+  .hero h1 { font-size: 2.8rem; max-width: none; margin-left: auto; margin-right: auto; white-space: nowrap; }
   .hero-sub { font-size: 1.25rem; }
 
   /* ----- Page grid (index) ----- */

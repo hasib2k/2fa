@@ -10,7 +10,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <section class="hero container">
-  <h1>Free 2FA Code<br>Generator</h1>
+  <h1>Free 2FA Code Generator</h1>
   <p class="hero-sub">Generate TOTP codes instantly from your secret keys</p>
   <p class="hero-sub2">Secure, fast, and works offline in your browser</p>
   <div class="hero-actions">
@@ -23,36 +23,39 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
+<!-- ── Centered generator section ── -->
+<div class="generator-centered">
+  <section class="generator">
+    <div id="accountsList"></div>
+
+    <div class="timer-card card">
+      <?= icon('stopwatch') ?>
+      <div>
+        <p id="timerText">30s until next refresh</p>
+        <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
+      </div>
+    </div>
+
+    <button id="addAccountBtn" class="btn btn-dark btn-block" type="button">
+      <?= icon('plus', 'icon-sm') ?><span>Add Another Account</span>
+    </button>
+
+    <div class="backup-row">
+      <button id="exportBackupBtn" class="btn btn-outline" type="button">
+        <?= icon('download', 'icon-sm') ?><span>Export Backup</span>
+      </button>
+      <button id="importBackupBtn" class="btn btn-outline" type="button">
+        <?= icon('upload', 'icon-sm') ?><span>Import Backup</span>
+      </button>
+      <input type="file" id="importFileInput" accept="application/json" hidden>
+    </div>
+  </section>
+</div>
+
 <div class="page-grid container">
 
-  <!-- ── Main column: generator + how-to ── -->
+  <!-- ── Main column: how-to ── -->
   <div class="page-main">
-
-    <section class="generator">
-      <div id="accountsList"></div>
-
-      <div class="timer-card card">
-        <?= icon('stopwatch') ?>
-        <div>
-          <p id="timerText">30s until next refresh</p>
-          <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
-        </div>
-      </div>
-
-      <button id="addAccountBtn" class="btn btn-dark btn-block" type="button">
-        <?= icon('plus', 'icon-sm') ?><span>Add Another Account</span>
-      </button>
-
-      <div class="backup-row">
-        <button id="exportBackupBtn" class="btn btn-outline" type="button">
-          <?= icon('download', 'icon-sm') ?><span>Export Backup</span>
-        </button>
-        <button id="importBackupBtn" class="btn btn-outline" type="button">
-          <?= icon('upload', 'icon-sm') ?><span>Import Backup</span>
-        </button>
-        <input type="file" id="importFileInput" accept="application/json" hidden>
-      </div>
-    </section>
 
     <section class="howto card">
       <h2>How to Use</h2>

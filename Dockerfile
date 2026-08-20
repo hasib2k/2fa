@@ -7,6 +7,8 @@
 # file uploads — so no further extensions/config are required.
 FROM php:8.3-apache
 
+RUN a2enmod rewrite
+
 WORKDIR /var/www/html
 COPY . .
 

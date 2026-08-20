@@ -109,8 +109,9 @@ require __DIR__ . '/includes/header.php';
     <div class="faq-item">
       <h3>What if I lose my secret keys, or forget my PIN?</h3>
       <p>Since everything is stored locally and encrypted with your PIN, clearing your browser data — or forgetting
-        your PIN — means your saved keys can't be recovered; you'd reset and re-add them. Always keep the backup
-        codes your services gave you.</p>
+        your PIN — means your saved keys can't be recovered; you'd reset and re-add them. Exporting a backup ahead
+        of time avoids this — the file stays PIN-encrypted, so it's only useful with the same PIN. Always keep the
+        backup codes your services gave you too.</p>
     </div>
     <div class="faq-item">
       <h3>Does this work on mobile?</h3>

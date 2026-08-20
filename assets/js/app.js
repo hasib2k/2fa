@@ -13,6 +13,9 @@
   const accountsList = document.getElementById('accountsList');
   const addAccountBtn = document.getElementById('addAccountBtn');
   const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+  const exportBackupBtn = document.getElementById('exportBackupBtn');
+  const importBackupBtn = document.getElementById('importBackupBtn');
+  const importFileInput = document.getElementById('importFileInput');
   const timerText = document.getElementById('timerText');
   const progressBar = document.getElementById('progressBar');
   const themeToggle = document.getElementById('themeToggle');
@@ -351,6 +354,64 @@
     location.reload();
   }
 
+  // ---------------- Backup export / import ----------------
+  // The exported file carries the same PIN-encrypted blobs already in
+  // localStorage — it's still useless without the PIN that produced them.
+
+  function exportBackup() {
+    const config = getCryptoConfig();
+    const rawAccounts = localStorage.getItem(STORAGE_KEY);
+    if (!config || !rawAccounts) {
+      showToast('Nothing to export yet — save a key first');
+      return;
+    }
+
+    const payload = {
+      app: '2fa-online-clone-backup',
+      version: 1,
+      crypto: config,
+      accounts: JSON.parse(rawAccounts),
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `2fa-backup-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast('Backup downloaded — keep the file and your PIN safe');
+  }
+
+  async function handleImportFile(file) {
+    let payload;
+    try {
+      payload = JSON.parse(await file.text());
+    } catch (e) {
+      showToast('That file is not a valid backup');
+      return;
+    }
+
+    const validShape =
+      payload && payload.crypto && payload.crypto.salt && payload.crypto.verifier && Array.isArray(payload.accounts);
+    if (!validShape) {
+      showToast('That file is not a valid backup');
+      return;
+    }
+
+    if (!confirm('This replaces every account and the PIN currently on this device with the backup file. Continue?')) {
+      return;
+    }
+
+    saveCryptoConfig(payload.crypto);
+    persistAccounts(payload.accounts);
+    // Full reload so the normal lock-screen flow picks up the restored
+    // data fresh — the original PIN is still required to see it.
+    location.reload();
+  }
+
   // ---------------- PIN setup modal (shown the first time a secret is saved) ----------------
 
   let pendingSetupResolve = null;
@@ -436,6 +497,16 @@
   if (setupConfirmBtn) setupConfirmBtn.addEventListener('click', confirmPinSetup);
   if (setupCancelBtn) setupCancelBtn.addEventListener('click', cancelPinSetup);
   if (setupPinConfirm) setupPinConfirm.addEventListener('keydown', (e) => { if (e.key === 'Enter') confirmPinSetup(); });
+
+  if (exportBackupBtn) exportBackupBtn.addEventListener('click', exportBackup);
+  if (importBackupBtn) importBackupBtn.addEventListener('click', () => importFileInput.click());
+  if (importFileInput) {
+    importFileInput.addEventListener('change', () => {
+      const file = importFileInput.files[0];
+      importFileInput.value = ''; // allow re-selecting the same file later
+      if (file) handleImportFile(file);
+    });
+  }
 
   function finishInit() {
     if (accounts.length === 0) addBlankAccount(false);

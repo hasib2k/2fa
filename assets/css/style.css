@@ -380,19 +380,33 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
 }
 
-.secret-input-wrap { position: relative; }
-.secret-input-wrap input { padding-right: 42px; }
+.secret-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.secret-input-wrap input {
+  flex: 1;
+  min-width: 0;
+  /* hide browser's built-in password reveal button */
+  -webkit-appearance: none;
+}
+.secret-input-wrap input::-ms-reveal,
+.secret-input-wrap input::-ms-clear { display: none; }
 .toggle-visibility {
-  position: absolute;
-  right: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: pointer;
-  padding: 6px;
 }
+.toggle-visibility:hover { background: var(--pill-bg); }
 .toggle-visibility svg { width: 18px; height: 18px; display: block; }
 
 .code-box {

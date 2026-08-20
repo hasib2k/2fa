@@ -4,7 +4,7 @@
  * Edit here to change branding, navigation, or the sponsor slot content.
  */
 
-$site_name = '2FA.Online';
+$site_name = '2FA Generator';
 
 $nav_links = [
     ['label' => 'Generator',          'url' => 'index.php'],

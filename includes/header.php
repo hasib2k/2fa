@@ -62,6 +62,15 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
     </nav>
 
     <div class="header-actions">
+      <?php if ($current_page === 'home'): ?>
+        <button id="historyBtn" class="btn btn-outline btn-sm header-only-desktop" type="button">
+          <?= icon('history', 'icon-sm') ?><span>History (<span id="historyCount">0</span>)</span>
+        </button>
+        <button id="refreshBtn" class="btn btn-outline btn-sm header-only-desktop" type="button">
+          <?= icon('refresh', 'icon-sm') ?><span>Refresh</span>
+        </button>
+      <?php endif; ?>
+
       <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle light/dark theme">
         <?= icon('sun', 'icon icon-sun') ?>
         <?= icon('moon', 'icon icon-moon') ?>
@@ -87,6 +96,14 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
           <?= htmlspecialchars($link['label']) ?>
         </a>
       <?php endforeach; ?>
+      <?php if ($current_page === 'home'): ?>
+        <button type="button" id="mobileHistoryBtn">
+          <?= icon('history', 'icon-sm') ?><span>History (<span id="mobileHistoryCount">0</span>)</span>
+        </button>
+        <button type="button" id="mobileRefreshBtn">
+          <?= icon('refresh', 'icon-sm') ?><span>Refresh Codes</span>
+        </button>
+      <?php endif; ?>
     </div>
   </nav>
 </header>

@@ -14,6 +14,7 @@
   const accountsList = document.getElementById('accountsList');
   const addAccountBtn = document.getElementById('addAccountBtn');
   const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+  const encryptDataBtn = document.getElementById('encryptDataBtn');
   const exportBackupBtn = document.getElementById('exportBackupBtn');
   const importBackupBtn = document.getElementById('importBackupBtn');
   const importFileInput = document.getElementById('importFileInput');
@@ -22,6 +23,10 @@
   const themeToggle = document.getElementById('themeToggle');
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
+  const historyBtn = document.getElementById('historyBtn');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const mobileHistoryBtn = document.getElementById('mobileHistoryBtn');
+  const mobileRefreshBtn = document.getElementById('mobileRefreshBtn');
 
   const lockScreen = document.getElementById('lockScreen');
   const lockPinInput = document.getElementById('lockPinInput');
@@ -78,15 +83,18 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   }
 
-  /** Serializes only encrypted secrets to storage — plaintext never persists. */
+  /** Serializes accounts to storage. Encrypted when a PIN is set, plaintext otherwise. */
   async function saveAccounts() {
     const storable = [];
     for (const a of accounts) {
       let encSecret = a.encSecret || null;
+      let plainSecret = null;
       if (cryptoKey && a.secret) {
         encSecret = await PinCrypto.encrypt(cryptoKey, a.secret);
+      } else if (!cryptoKey) {
+        plainSecret = a.secret || '';
       }
-      storable.push({ id: a.id, name: a.name, encSecret, createdAt: a.createdAt });
+      storable.push({ id: a.id, name: a.name, encSecret, secret: plainSecret, createdAt: a.createdAt });
     }
     persistAccounts(storable);
   }
@@ -103,6 +111,29 @@
       accountsList.appendChild(renderAccountCard(account));
     });
     accounts.forEach((account) => refreshCode(account.id));
+    updateHistoryCount();
+    updateEncryptBtn();
+  }
+
+  function updateHistoryCount() {
+    const count = accounts.filter((a) => a.secret || a.encSecret).length;
+    ['historyCount', 'mobileHistoryCount'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = count;
+    });
+  }
+
+  function updateEncryptBtn() {
+    if (!encryptDataBtn) return;
+    if (hasCryptoConfig()) {
+      encryptDataBtn.innerHTML = `${iconSvg('check')}<span>Data Encrypted</span>`;
+      encryptDataBtn.classList.add('btn-encrypted');
+      encryptDataBtn.classList.remove('btn-encrypt');
+    } else {
+      encryptDataBtn.innerHTML = `${iconSvg('lock')}<span>Encrypt Your Data</span>`;
+      encryptDataBtn.classList.add('btn-encrypt');
+      encryptDataBtn.classList.remove('btn-encrypted');
+    }
   }
 
   function renderAccountCard(account) {
@@ -154,22 +185,9 @@
 
     secretInput.addEventListener('input', () => {
       account.secret = secretInput.value;
-      refreshCode(account.id); // live preview works even before a PIN exists
-
-      if (account.secret && !cryptoKey) {
-        // First real secret ever typed on this device: gate saving behind
-        // setting a PIN, so nothing unencrypted ever reaches localStorage.
-        requirePinSetup(
-          () => saveAccounts(),
-          () => {
-            account.secret = '';
-            secretInput.value = '';
-            refreshCode(account.id);
-          }
-        );
-        return;
-      }
+      refreshCode(account.id);
       saveAccounts();
+      updateHistoryCount();
     });
 
     toggleBtn.addEventListener('click', () => {
@@ -496,6 +514,7 @@
     'eye-off': '<path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a13.2 13.2 0 0 1-3.4 4.1M6.2 6.2C3.5 7.9 1 12 1 12s4 7 11 7c1.3 0 2.5-.2 3.6-.6"/>',
     copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
     check: '<path d="M20 6 9 17l-5-5"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   };
 
   function iconSvg(name) {
@@ -516,6 +535,35 @@
 
   if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
   if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+
+  if (historyBtn) historyBtn.addEventListener('click', () => {
+    accountsList && accountsList.scrollIntoView({ behavior: 'smooth' });
+  });
+  if (refreshBtn) refreshBtn.addEventListener('click', refreshAllCodes);
+
+  if (mobileHistoryBtn) mobileHistoryBtn.addEventListener('click', () => {
+    toggleMenu();
+    accountsList && accountsList.scrollIntoView({ behavior: 'smooth' });
+  });
+  if (mobileRefreshBtn) mobileRefreshBtn.addEventListener('click', () => {
+    toggleMenu();
+    refreshAllCodes();
+  });
+
+  if (encryptDataBtn) encryptDataBtn.addEventListener('click', () => {
+    if (hasCryptoConfig()) {
+      showToast('Your data is already encrypted with a PIN');
+      return;
+    }
+    requirePinSetup(
+      async () => {
+        await saveAccounts();
+        updateEncryptBtn();
+        showToast('Your data is now encrypted with a PIN');
+      },
+      () => {}
+    );
+  });
 
   if (lockUnlockBtn) lockUnlockBtn.addEventListener('click', () => attemptUnlock(false));
   if (lockPinInput) lockPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(false); });
@@ -570,15 +618,8 @@
     if (hasCryptoConfig()) {
       const unlocked = await trySessionUnlock();
       if (!unlocked) showLockScreen();
-    } else if (accounts.some((a) => a.secret && !a.encSecret)) {
-      // Accounts saved before PIN encryption existed: still plaintext in
-      // storage. Require a PIN now so saveAccounts() can encrypt them:
-      // declining leaves them viewable this session but unmigrated.
-      requirePinSetup(
-        () => { saveAccounts(); finishInit(); },
-        () => finishInit()
-      );
     } else {
+      // No PIN set — encryption is optional. Load plaintext accounts directly.
       finishInit();
     }
   }

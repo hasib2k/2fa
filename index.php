@@ -13,9 +13,14 @@ require __DIR__ . '/includes/header.php';
   <h1>Free 2FA Code<br>Generator</h1>
   <p class="hero-sub">Generate TOTP codes instantly from your secret keys</p>
   <p class="hero-sub2">Secure, fast, and works offline in your browser</p>
-  <button id="clearHistoryBtn" class="btn btn-outline btn-danger" type="button">
-    <?= icon('trash', 'icon-sm') ?><span>Clear History</span>
-  </button>
+  <div class="hero-actions">
+    <button id="clearHistoryBtn" class="btn btn-outline btn-danger" type="button">
+      <?= icon('trash', 'icon-sm') ?><span>Clear History</span>
+    </button>
+    <button id="encryptDataBtn" class="btn btn-outline btn-encrypt" type="button">
+      <?= icon('lock', 'icon-sm') ?><span>Encrypt Your Data</span>
+    </button>
+  </div>
 </section>
 
 <div class="page-grid container">

@@ -560,8 +560,8 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 .howto-step p { margin: 0; color: var(--text-muted); }
 
 .security-card {
-  background: var(--red-tint);
-  border: 1px solid var(--red-tint-border);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 22px;
 }

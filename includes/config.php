@@ -20,19 +20,19 @@ $current_year = date('Y');
  * This is intentionally generic — swap the copy below for a real partner.
  */
 $sponsor = [
-    'eyebrow'   => 'Grow With Confidence',
-    'eyebrow_icon' => 'rocket',
-    'badge'     => 'Sponsored',
-    'partner'   => 'Your Sponsor Name',
-    'tag'       => 'Featured Partner',
-    'headline'  => 'Reach Thousands of Security-Conscious Users',
-    'body'      => 'This space is reserved for a sponsor. Advertise your product or service to visitors who care about privacy and account security.',
+    'eyebrow'      => 'বাংলাদেশের বিশ্বস্ত অনলাইন শপ',
+    'eyebrow_icon' => 'shopping-bag',
+    'badge'        => 'Sponsored',
+    'partner'      => 'সব বাজার',
+    'tag'          => 'Featured Partner',
+    'headline'     => 'শিশুদের খেলনা ও পণ্য — ঘরে বসে অর্ডার করুন',
+    'body'         => 'বাংলাদেশের বিশ্বস্ত অনলাইন শপিং প্ল্যাটফর্ম। ক্যাশ অন ডেলিভারি, ঢাকায় ৪৮ ঘণ্টায় ডেলিভারি এবং সারাদেশে সাশ্রয়ী মূল্যে শিপিং।',
     'features'  => [
-        ['icon' => 'target',       'title' => 'Targeted Audience', 'desc' => 'Reach users who actively care about digital security.'],
-        ['icon' => 'trending-up',  'title' => 'Simple Placement',  'desc' => 'One clean, responsive banner slot — no clutter.'],
-        ['icon' => 'users',        'title' => 'Fair Partnership',  'desc' => 'Transparent, editable sponsorship placement.'],
+        ['icon' => 'truck',        'title' => 'দ্রুত ডেলিভারি',   'desc' => 'ঢাকায় ৪৮ ঘণ্টা, সারাদেশে সাশ্রয়ী শিপিং।'],
+        ['icon' => 'tag',          'title' => '৩০% পর্যন্ত ছাড়',  'desc' => 'বিভিন্ন পণ্যে আকর্ষণীয় ডিসকাউন্ট।'],
+        ['icon' => 'shield-check', 'title' => 'ক্যাশ অন ডেলিভারি', 'desc' => 'পণ্য হাতে পেয়ে টাকা দিন।'],
     ],
-    'cta_label' => 'Become a Sponsor →',
-    'cta_url'   => '/about#contact',
+    'cta_label' => 'sobbazar.com ভিজিট করুন →',
+    'cta_url'   => 'https://sobbazar.com/',
     'trust'     => [],
 ];

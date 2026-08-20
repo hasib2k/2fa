@@ -583,7 +583,7 @@
         const masked = a.secret ? maskSecret(a.secret) : '<span class="history-encrypted">encrypted</span>';
         const when = relativeTime(a.createdAt);
         return `
-          <div class="history-item">
+          <div class="history-item" data-account-id="${escapeAttr(a.id)}" role="button" tabindex="0" title="Go to account">
             <div class="history-item-top">
               <span class="history-item-name">${name}</span>
               <span class="history-item-badge">${when}</span>
@@ -602,11 +602,35 @@
 
     historyPanel.hidden = false;
 
-    // Position below the anchor button
-    const rect = anchorEl.getBoundingClientRect();
-    historyPanel.style.top = (rect.bottom + 8) + 'px';
-    historyPanel.style.right = (window.innerWidth - rect.right) + 'px';
-    historyPanel.style.left = 'auto';
+    // Wire up item clicks
+    historyPanel.querySelectorAll('.history-item[data-account-id]').forEach((item) => {
+      const handler = () => {
+        const id = item.dataset.accountId;
+        historyPanel.hidden = true;
+        const card = accountsList && accountsList.querySelector(`.account-card[data-id="${id}"]`);
+        if (!card) return;
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.add('card-highlight');
+        setTimeout(() => card.classList.remove('card-highlight'), 1200);
+      };
+      item.addEventListener('click', handler);
+      item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') handler(); });
+    });
+
+    // Mobile: stretch across viewport below header
+    if (window.innerWidth < 1024) {
+      historyPanel.style.top = (64 + 8) + 'px';
+      historyPanel.style.left = '16px';
+      historyPanel.style.right = '16px';
+      historyPanel.style.width = 'auto';
+    } else {
+      // Desktop: position below the anchor button
+      const rect = anchorEl.getBoundingClientRect();
+      historyPanel.style.top = (rect.bottom + 8) + 'px';
+      historyPanel.style.right = (window.innerWidth - rect.right) + 'px';
+      historyPanel.style.left = 'auto';
+      historyPanel.style.width = '360px';
+    }
   }
 
   function toggleHistoryPanel(anchorEl) {
@@ -643,7 +667,7 @@
   if (mobileHistoryBtn) mobileHistoryBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleMenu();
-    setTimeout(() => toggleHistoryPanel(mobileHistoryBtn), 50);
+    toggleHistoryPanel(mobileHistoryBtn);
   });
   if (mobileRefreshBtn) mobileRefreshBtn.addEventListener('click', () => {
     toggleMenu();

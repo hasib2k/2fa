@@ -722,7 +722,17 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
 }
+.history-item:hover { border-color: var(--blue); background: var(--blue-tint); }
+
+@keyframes cardHighlight {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 99, 235, .5); }
+  50%  { box-shadow: 0 0 0 6px rgba(37, 99, 235, .2); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+.card-highlight { animation: cardHighlight 1.2s ease; }
 .history-item-top {
   display: flex;
   align-items: center;
@@ -757,8 +767,8 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   left: 50%;
   bottom: 24px;
   transform: translateX(-50%) translateY(20px);
-  background: var(--black);
-  color: #fff;
+  background: #1e293b;
+  color: #f1f5f9;
   padding: 10px 18px;
   border-radius: var(--radius-sm);
   font-size: .9rem;

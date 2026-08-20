@@ -469,6 +469,14 @@
     accounts = loadAccounts();
     if (hasCryptoConfig()) {
       showLockScreen();
+    } else if (accounts.some((a) => a.secret && !a.encSecret)) {
+      // Accounts saved before PIN encryption existed: still plaintext in
+      // storage. Require a PIN now so saveAccounts() can encrypt them:
+      // declining leaves them viewable this session but unmigrated.
+      requirePinSetup(
+        () => { saveAccounts(); finishInit(); },
+        () => finishInit()
+      );
     } else {
       finishInit();
     }

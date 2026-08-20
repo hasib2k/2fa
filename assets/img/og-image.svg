@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f3f5f9"/>
+  <rect x="60" y="60" width="1080" height="510" rx="24" fill="#ffffff" stroke="#e3e6ec" stroke-width="2"/>
+
+  <!-- Shield icon -->
+  <g transform="translate(504, 130)">
+    <path d="M96 16 32 40v48c0 40 27.2 75.2 64 88 36.8-12.8 64-48 64-88V40L96 16Z" fill="none" stroke="#2563eb" stroke-width="8" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="310" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="72" font-weight="800" fill="#0f172a" text-anchor="middle" letter-spacing="-1">2FACode.co</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="380" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="32" fill="#64748b" text-anchor="middle">Free, Secure 2FA Code Generator</text>
+
+  <!-- Tags -->
+  <rect x="310" y="430" width="200" height="48" rx="24" fill="#eff6ff"/>
+  <text x="410" y="461" font-family="-apple-system, sans-serif" font-size="22" fill="#2563eb" text-anchor="middle" font-weight="600">100% Private</text>
+
+  <rect x="530" y="430" width="160" height="48" rx="24" fill="#ecfdf5"/>
+  <text x="610" y="461" font-family="-apple-system, sans-serif" font-size="22" fill="#059669" text-anchor="middle" font-weight="600">Offline</text>
+
+  <rect x="710" y="430" width="180" height="48" rx="24" fill="#f5f3ff"/>
+  <text x="800" y="461" font-family="-apple-system, sans-serif" font-size="22" fill="#7c3aed" text-anchor="middle" font-weight="600">Free Forever</text>
+</svg>

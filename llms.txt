@@ -1,0 +1,29 @@
+# 2FACode.co
+
+> A free, secure, privacy-focused two-factor authentication (TOTP) code generator that works entirely in your browser. No data is ever sent to a server.
+
+## What this site does
+
+- Generates TOTP (Time-based One-Time Password) codes from Base32 secret keys, following RFC 6238 / RFC 4226.
+- All computation happens client-side using the Web Crypto API — no secrets ever leave the browser.
+- Accounts and secret keys are saved in localStorage, optionally PIN-encrypted using AES-GCM with PBKDF2 key derivation.
+- Codes refresh automatically every 30 seconds in sync with the TOTP window.
+
+## Pages
+
+- `https://2facode.co/` — Main generator. Users paste their secret keys and get live TOTP codes.
+- `https://2facode.co/about` — Explains the security model, how TOTP works, and privacy guarantees.
+
+## Key features
+
+- Works offline after first load (no external network requests).
+- PIN-encrypted local storage (optional) — AES-GCM, PBKDF2, 200 000 iterations.
+- 7-day account expiry with export/import backup support.
+- Dark mode, mobile responsive.
+- No tracking, no analytics, no cookies.
+
+## Technical stack
+
+- PHP (server-side rendering, headers only — no server-side logic for crypto).
+- Vanilla JS (Web Crypto API for TOTP and PIN encryption).
+- No frameworks, no CDN dependencies.

@@ -23,8 +23,8 @@ require_once __DIR__ . '/icons.php';
   </div>
 </footer>
 
-<script src="assets/js/totp.js"></script>
-<script src="assets/js/crypto.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="/assets/js/totp.js"></script>
+<script src="/assets/js/crypto.js"></script>
+<script src="/assets/js/app.js"></script>
 </body>
 </html>

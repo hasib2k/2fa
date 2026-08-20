@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /includes/
+
+Sitemap: https://2facode.co/sitemap.xml

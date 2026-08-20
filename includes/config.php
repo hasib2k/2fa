@@ -4,7 +4,8 @@
  * Edit here to change branding, navigation, or the sponsor slot content.
  */
 
-$site_name = '2FA Generator';
+$site_name = '2FACode.co';
+$site_url  = 'https://2facode.co';
 
 $nav_links = [
     ['label' => 'Generator',          'url' => '/'],

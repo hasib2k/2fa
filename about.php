@@ -2,8 +2,8 @@
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/icons.php';
 
-$page_title   = 'About — ' . $site_name;
-$page_desc    = 'Learn how ' . $site_name . ' generates two-factor authentication codes privately and securely, entirely in your browser.';
+$page_title   = 'About 2FACode.co — Free, Secure & Private 2FA Code Generator';
+$page_desc    = 'Learn how 2FACode.co generates TOTP two-factor authentication codes privately and securely — 100% in your browser, no data ever sent to a server.';
 $current_page = 'about';
 
 require __DIR__ . '/includes/header.php';

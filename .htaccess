@@ -1,6 +1,14 @@
 Options -Indexes
 RewriteEngine On
 
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Redirect www to non-www
+RewriteCond %{HTTP_HOST} ^www\.2facode\.co$ [NC]
+RewriteRule ^ https://2facode.co%{REQUEST_URI} [R=301,L]
+
 # Remove .php extension from URLs
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
@@ -8,3 +16,6 @@ RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
 # Redirect /index to /
 RewriteRule ^index$ / [R=301,L]
+
+# Security: block direct access to includes/
+RewriteRule ^includes/ - [F,L]

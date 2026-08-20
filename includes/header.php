@@ -25,6 +25,28 @@ if (!headers_sent()) {
 $current_page = $current_page ?? 'home';
 $page_title   = $page_title ?? ($site_name . ' — Free 2FA Code Generator');
 $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authentication (TOTP) code generator that works entirely in your browser.';
+
+$canonical_path = ($current_page === 'about') ? '/about' : '/';
+$canonical_url  = $site_url . $canonical_path;
+$og_image       = $site_url . '/assets/img/og-image.php';
+
+// JSON-LD — use json_encode so special chars are safe valid JSON
+$jsonld = json_encode([
+    '@context'            => 'https://schema.org',
+    '@type'               => 'WebApplication',
+    'name'                => $site_name,
+    'url'                 => $site_url,
+    'description'         => $page_desc,
+    'applicationCategory' => 'SecurityApplication',
+    'operatingSystem'     => 'Any',
+    'offers'              => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD'],
+    'featureList'         => [
+        'Generate TOTP 2FA codes from secret keys',
+        'Works entirely offline in the browser',
+        'PIN-encrypted local storage',
+        'No data sent to any server',
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,8 +55,34 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($page_title) ?></title>
 <meta name="description" content="<?= htmlspecialchars($page_desc) ?>">
-<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-<link rel="stylesheet" href="assets/css/style.css">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#2563eb">
+<link rel="canonical" href="<?= htmlspecialchars($canonical_url) ?>">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+
+<!-- Open Graph -->
+<meta property="og:type"        content="website">
+<meta property="og:locale"      content="en_US">
+<meta property="og:url"         content="<?= htmlspecialchars($canonical_url) ?>">
+<meta property="og:title"       content="<?= htmlspecialchars($page_title) ?>">
+<meta property="og:description" content="<?= htmlspecialchars($page_desc) ?>">
+<meta property="og:image"       content="<?= htmlspecialchars($og_image) ?>">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name"   content="<?= htmlspecialchars($site_name) ?>">
+
+<!-- Twitter Card -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="<?= htmlspecialchars($page_title) ?>">
+<meta name="twitter:description" content="<?= htmlspecialchars($page_desc) ?>">
+<meta name="twitter:image"       content="<?= htmlspecialchars($og_image) ?>">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json"><?= $jsonld ?></script>
+
+<link rel="stylesheet" href="/assets/css/style.css">
 <script nonce="<?= htmlspecialchars($csp_nonce) ?>">
   try { if (localStorage.getItem('tfa_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch(e) {}
 </script>

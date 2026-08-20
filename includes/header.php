@@ -64,7 +64,7 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
 
       <?php if ($current_page === 'about'): ?>
         <a href="index.php" class="btn btn-outline btn-sm">
-          <?= icon('arrow-left', 'icon-sm') ?><span>Back to Generator</span>
+          <?= icon('arrow-left', 'icon-sm') ?><span>Back</span>
         </a>
       <?php else: ?>
         <button id="menuToggle" class="icon-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">

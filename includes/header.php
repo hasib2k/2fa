@@ -38,15 +38,15 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="index.php" class="brand">
+    <a href="/" class="brand">
       <?= icon('shield', 'shield-icon') ?>
       <span><?= htmlspecialchars($site_name) ?></span>
     </a>
 
     <nav class="desktop-nav" aria-label="Main navigation">
       <?php foreach ($nav_links as $link):
-        $is_active = ($link['url'] === 'index.php' && $current_page === 'home')
-                  || ($link['url'] === 'about.php' && $current_page === 'about');
+        $is_active = ($link['url'] === '/' && $current_page === 'home')
+                  || ($link['url'] === '/about' && $current_page === 'about');
       ?>
         <a href="<?= htmlspecialchars($link['url']) ?>"
            class="nav-link<?= $is_active ? ' active' : '' ?>"
@@ -63,7 +63,7 @@ $page_desc    = $page_desc ?? 'A free, secure, privacy-focused two-factor authen
       </button>
 
       <?php if ($current_page === 'about'): ?>
-        <a href="index.php" class="btn btn-outline btn-sm">
+        <a href="/" class="btn btn-outline btn-sm">
           <?= icon('arrow-left', 'icon-sm') ?><span>Back</span>
         </a>
       <?php else: ?>

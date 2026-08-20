@@ -7,9 +7,9 @@
 $site_name = '2FA Generator';
 
 $nav_links = [
-    ['label' => 'Generator',          'url' => 'index.php'],
-    ['label' => 'About',              'url' => 'about.php'],
-    ['label' => 'Sponsor',            'url' => 'index.php#sponsor'],
+    ['label' => 'Generator',          'url' => '/'],
+    ['label' => 'About',              'url' => '/about'],
+    ['label' => 'Sponsor',            'url' => '/#sponsor'],
     ['label' => 'Contact on Telegram','url' => 'https://t.me/', 'external' => true],
 ];
 
@@ -33,6 +33,6 @@ $sponsor = [
         ['icon' => 'users',        'title' => 'Fair Partnership',  'desc' => 'Transparent, editable sponsorship placement.'],
     ],
     'cta_label' => 'Become a Sponsor →',
-    'cta_url'   => 'about.php#contact',
+    'cta_url'   => '/about#contact',
     'trust'     => [],
 ];

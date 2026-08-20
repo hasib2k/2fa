@@ -53,6 +53,7 @@ html[data-theme='dark'] {
 }
 
 html[data-theme='dark'] .btn-dark { color: #0b0f19; }
+html[data-theme='dark'] .badge-active { background: var(--blue); color: #fff; }
 
 * { box-sizing: border-box; }
 /* Author styles (e.g. `.overlay { display: flex }`) share specificity with

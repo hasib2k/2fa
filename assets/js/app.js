@@ -326,7 +326,7 @@
     if (lockScreen) lockScreen.hidden = true;
   }
 
-  async function attemptUnlock() {
+  async function attemptUnlock(silent = false) {
     const pin = lockPinInput.value.trim();
     const config = getCryptoConfig();
     if (!pin || !config) return;
@@ -341,9 +341,11 @@
       hideLockScreen();
       finishInit();
     } catch (e) {
-      lockError.hidden = false;
-      lockPinInput.value = '';
-      lockPinInput.focus();
+      if (!silent) {
+        lockError.hidden = false;
+        lockPinInput.value = '';
+        lockPinInput.focus();
+      }
     }
   }
 
@@ -490,8 +492,9 @@
   if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
   if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
 
-  if (lockUnlockBtn) lockUnlockBtn.addEventListener('click', attemptUnlock);
-  if (lockPinInput) lockPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(); });
+  if (lockUnlockBtn) lockUnlockBtn.addEventListener('click', () => attemptUnlock(false));
+  if (lockPinInput) lockPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(false); });
+  if (lockPinInput) lockPinInput.addEventListener('input', () => { if (lockPinInput.value.length >= 4) attemptUnlock(true); });
   if (lockResetBtn) lockResetBtn.addEventListener('click', resetAllData);
 
   if (setupConfirmBtn) setupConfirmBtn.addEventListener('click', confirmPinSetup);

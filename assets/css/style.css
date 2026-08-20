@@ -247,11 +247,12 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
   padding: 12px 20px 16px;
 }
 .hero h1 {
-  font-size: 2.4rem;
+  font-size: clamp(1.4rem, 6vw, 2.4rem);
   line-height: 1.15;
   font-weight: 800;
   margin: 0 0 20px;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 .hero-sub {
   font-size: 1.15rem;
@@ -793,7 +794,7 @@ html[data-theme='dark'] .icon-moon { display: inline-block; }
 /* ---------------- Responsive ---------------- */
 @media (min-width: 560px) {
   .sponsor-features { grid-template-columns: repeat(3, 1fr); }
-  .hero h1 { font-size: 2.8rem; }
+  .hero h1 { font-size: clamp(1.4rem, 6vw, 2.4rem); }
 }
 
 @media (min-width: 720px) {

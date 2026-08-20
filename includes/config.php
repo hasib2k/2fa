@@ -20,19 +20,19 @@ $current_year = date('Y');
  * This is intentionally generic — swap the copy below for a real partner.
  */
 $sponsor = [
-    'eyebrow'      => 'বাংলাদেশের বিশ্বস্ত অনলাইন শপ',
-    'eyebrow_icon' => 'shopping-bag',
+    'eyebrow'      => 'Trusted Facebook & Meta Ad Accounts',
+    'eyebrow_icon' => 'trending-up',
     'badge'        => 'Sponsored',
-    'partner'      => 'সব বাজার',
+    'partner'      => 'FBM24',
     'tag'          => 'Featured Partner',
-    'headline'     => 'শিশুদের খেলনা ও পণ্য — ঘরে বসে অর্ডার করুন',
-    'body'         => 'বাংলাদেশের বিশ্বস্ত অনলাইন শপিং প্ল্যাটফর্ম। ক্যাশ অন ডেলিভারি, ঢাকায় ৪৮ ঘণ্টায় ডেলিভারি এবং সারাদেশে সাশ্রয়ী মূল্যে শিপিং।',
+    'headline'     => 'Verified Facebook Business Manager & Ad Accounts',
+    'body'         => 'The trusted marketplace for verified Facebook Business Manager accounts, Ad Accounts, WhatsApp Business API, and TikTok Agency Ad Accounts. 12,400+ verified customers across 40+ countries.',
     'features'  => [
-        ['icon' => 'truck',        'title' => 'দ্রুত ডেলিভারি',   'desc' => 'ঢাকায় ৪৮ ঘণ্টা, সারাদেশে সাশ্রয়ী শিপিং।'],
-        ['icon' => 'tag',          'title' => '৩০% পর্যন্ত ছাড়',  'desc' => 'বিভিন্ন পণ্যে আকর্ষণীয় ডিসকাউন্ট।'],
-        ['icon' => 'shield-check', 'title' => 'ক্যাশ অন ডেলিভারি', 'desc' => 'পণ্য হাতে পেয়ে টাকা দিন।'],
+        ['icon' => 'zap',     'title' => 'Fast Delivery',       'desc' => 'Average delivery under 90 minutes.'],
+        ['icon' => 'shield',  'title' => '7-Day Guarantee',     'desc' => 'Replacement guarantee on all accounts.'],
+        ['icon' => 'globe',   'title' => '40+ Countries',       'desc' => '12,400+ verified customers worldwide.'],
     ],
-    'cta_label' => 'sobbazar.com ভিজিট করুন →',
-    'cta_url'   => 'https://sobbazar.com/',
+    'cta_label' => 'Visit FBM24.com →',
+    'cta_url'   => 'https://www.fbm24.com/',
     'trust'     => [],
 ];

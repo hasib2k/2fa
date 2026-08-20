@@ -1,11 +1,12 @@
 /**
  * app.js — UI wiring for the 2FA code generator.
- * Handles: account storage (localStorage, 7-day expiry), rendering,
- * live TOTP codes, the shared countdown/progress bar, theme + menu toggles,
- * and clipboard copy.
+ * Handles: PIN-encrypted account storage (localStorage, 7-day expiry),
+ * rendering, live TOTP codes, the shared countdown/progress bar,
+ * theme + menu toggles, and clipboard copy.
  */
 (() => {
   const STORAGE_KEY = 'tfa_accounts';
+  const CRYPTO_KEY_STORAGE = 'tfa_crypto';
   const THEME_KEY = 'tfa_theme';
   const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -18,9 +19,40 @@
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
 
-  let accounts = [];
+  const lockScreen = document.getElementById('lockScreen');
+  const lockPinInput = document.getElementById('lockPinInput');
+  const lockError = document.getElementById('lockError');
+  const lockUnlockBtn = document.getElementById('lockUnlockBtn');
+  const lockResetBtn = document.getElementById('lockResetBtn');
 
-  // ---------------- Storage ----------------
+  const pinSetupModal = document.getElementById('pinSetupModal');
+  const setupPinInput = document.getElementById('setupPinInput');
+  const setupPinConfirm = document.getElementById('setupPinConfirm');
+  const setupError = document.getElementById('setupError');
+  const setupConfirmBtn = document.getElementById('setupConfirmBtn');
+  const setupCancelBtn = document.getElementById('setupCancelBtn');
+
+  let accounts = [];
+  /** @type {CryptoKey|null} Derived once per page load — never persisted. */
+  let cryptoKey = null;
+
+  // ---------------- Crypto config storage ----------------
+
+  function getCryptoConfig() {
+    try {
+      return JSON.parse(localStorage.getItem(CRYPTO_KEY_STORAGE) || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
+  function saveCryptoConfig(config) {
+    localStorage.setItem(CRYPTO_KEY_STORAGE, JSON.stringify(config));
+  }
+  function hasCryptoConfig() {
+    return getCryptoConfig() !== null;
+  }
+
+  // ---------------- Account storage ----------------
 
   function loadAccounts() {
     let stored = [];
@@ -42,8 +74,17 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   }
 
-  function saveAccounts() {
-    persistAccounts(accounts);
+  /** Serializes only encrypted secrets to storage — plaintext never persists. */
+  async function saveAccounts() {
+    const storable = [];
+    for (const a of accounts) {
+      let encSecret = a.encSecret || null;
+      if (cryptoKey && a.secret) {
+        encSecret = await PinCrypto.encrypt(cryptoKey, a.secret);
+      }
+      storable.push({ id: a.id, name: a.name, encSecret, createdAt: a.createdAt });
+    }
+    persistAccounts(storable);
   }
 
   function newId() {
@@ -109,8 +150,22 @@
 
     secretInput.addEventListener('input', () => {
       account.secret = secretInput.value;
+      refreshCode(account.id); // live preview works even before a PIN exists
+
+      if (account.secret && !cryptoKey) {
+        // First real secret ever typed on this device: gate saving behind
+        // setting a PIN, so nothing unencrypted ever reaches localStorage.
+        requirePinSetup(
+          () => saveAccounts(),
+          () => {
+            account.secret = '';
+            secretInput.value = '';
+            refreshCode(account.id);
+          }
+        );
+        return;
+      }
       saveAccounts();
-      refreshCode(account.id);
     });
 
     toggleBtn.addEventListener('click', () => {
@@ -254,7 +309,98 @@
     }
   }
 
-  // ---------------- Icons (mirrors includes/icons.php for JS-rendered markup) ----------------
+  // ---------------- PIN lock screen (shown when a PIN was set previously) ----------------
+
+  function showLockScreen() {
+    if (!lockScreen) return finishInit(); // page has no lock UI (e.g. About page)
+    lockScreen.hidden = false;
+    lockPinInput.value = '';
+    lockError.hidden = true;
+    lockPinInput.focus();
+  }
+
+  function hideLockScreen() {
+    if (lockScreen) lockScreen.hidden = true;
+  }
+
+  async function attemptUnlock() {
+    const pin = lockPinInput.value.trim();
+    const config = getCryptoConfig();
+    if (!pin || !config) return;
+    try {
+      const key = await PinCrypto.unlock(pin, config);
+      cryptoKey = key;
+      for (const account of accounts) {
+        if (account.encSecret) {
+          account.secret = await PinCrypto.decrypt(key, account.encSecret);
+        }
+      }
+      hideLockScreen();
+      finishInit();
+    } catch (e) {
+      lockError.hidden = false;
+      lockPinInput.value = '';
+      lockPinInput.focus();
+    }
+  }
+
+  function resetAllData() {
+    if (!confirm('This erases every saved account and your PIN from this browser — there is no way to undo this. Continue?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(CRYPTO_KEY_STORAGE);
+    location.reload();
+  }
+
+  // ---------------- PIN setup modal (shown the first time a secret is saved) ----------------
+
+  let pendingSetupResolve = null;
+
+  function requirePinSetup(onSuccess, onCancel) {
+    if (!pinSetupModal) { onSuccess(); return; } // no modal on this page — just proceed
+    pendingSetupResolve = { onSuccess, onCancel };
+    pinSetupModal.hidden = false;
+    setupPinInput.value = '';
+    setupPinConfirm.value = '';
+    setupError.hidden = true;
+    setupPinInput.focus();
+  }
+
+  function closePinSetupModal() {
+    if (pinSetupModal) pinSetupModal.hidden = true;
+    pendingSetupResolve = null;
+  }
+
+  async function confirmPinSetup() {
+    const pin = setupPinInput.value.trim();
+    const confirmPin = setupPinConfirm.value.trim();
+
+    if (!/^\d{4,6}$/.test(pin)) {
+      setupError.textContent = 'PIN must be 4–6 digits.';
+      setupError.hidden = false;
+      return;
+    }
+    if (pin !== confirmPin) {
+      setupError.textContent = "PINs don't match.";
+      setupError.hidden = false;
+      return;
+    }
+
+    const { config, key } = await PinCrypto.createConfig(pin);
+    saveCryptoConfig(config);
+    cryptoKey = key;
+
+    const resolve = pendingSetupResolve;
+    closePinSetupModal();
+    if (resolve && resolve.onSuccess) await resolve.onSuccess();
+  }
+
+  function cancelPinSetup() {
+    const resolve = pendingSetupResolve;
+    closePinSetupModal();
+    if (resolve && resolve.onCancel) resolve.onCancel();
+  }
+
+  // ---------------- Icons ----------------
 
   const ICONS = {
     trash: '<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0-1 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 6h12Z"/>',
@@ -283,8 +429,15 @@
   if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
   if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
 
-  if (accountsList) {
-    accounts = loadAccounts();
+  if (lockUnlockBtn) lockUnlockBtn.addEventListener('click', attemptUnlock);
+  if (lockPinInput) lockPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(); });
+  if (lockResetBtn) lockResetBtn.addEventListener('click', resetAllData);
+
+  if (setupConfirmBtn) setupConfirmBtn.addEventListener('click', confirmPinSetup);
+  if (setupCancelBtn) setupCancelBtn.addEventListener('click', cancelPinSetup);
+  if (setupPinConfirm) setupPinConfirm.addEventListener('keydown', (e) => { if (e.key === 'Enter') confirmPinSetup(); });
+
+  function finishInit() {
     if (accounts.length === 0) addBlankAccount(false);
     render();
 
@@ -297,8 +450,10 @@
 
     if (clearHistoryBtn) {
       clearHistoryBtn.addEventListener('click', () => {
-        if (!confirm('Clear all saved accounts and secret keys from this browser?')) return;
+        if (!confirm('Clear all saved accounts, secret keys, and your PIN from this browser?')) return;
         accounts = [];
+        cryptoKey = null;
+        localStorage.removeItem(CRYPTO_KEY_STORAGE);
         saveAccounts();
         addBlankAccount(false);
         render();
@@ -308,5 +463,14 @@
 
     setInterval(tickTimer, 1000);
     tickTimer();
+  }
+
+  if (accountsList) {
+    accounts = loadAccounts();
+    if (hasCryptoConfig()) {
+      showLockScreen();
+    } else {
+      finishInit();
+    }
   }
 })();
